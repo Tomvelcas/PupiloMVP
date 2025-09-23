@@ -38,7 +38,7 @@ function pickRandom<T>(arr: T[], n: number): T[] {
 export async function generateGameContent(prompt: string): Promise<GeneratedGame | null> {
   // ⚠️ API key de OpenAI embebida
   const apiKey =
-    "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";
+    "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";
   const chatEndpoint = "https://api.openai.com/v1/chat/completions";
 
   const systemPrompt = `Eres un asistente que crea juegos educativos para niños .  
@@ -138,3 +138,4 @@ REGLAS:
     return null;
   }
 }
+
