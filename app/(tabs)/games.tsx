@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,7 @@ interface GameItem {
 interface GameScenario {
   id: string;
   title: string;
+  instruction: string; // 👈 instrucciones por escenario
   items: GameItem[];
   difficulty: 'easy' | 'medium' | 'hard';
 }
@@ -42,10 +43,15 @@ interface FindObjectsGame {
   level: number;
 }
 
+interface AnalogyOption {
+  text: string;
+  imageUrl: string;
+}
+
 interface AnalogyGame {
   id: string;
   question: string;
-  options: string[];
+  options: AnalogyOption[]; // 👈 ahora con imágenes
   correctAnswer: number;
   level: number;
 }
@@ -54,33 +60,38 @@ const oddOneOutScenarios: GameScenario[] = [
   {
     id: '1',
     title: 'Animales del Océano vs Tierra',
+    instruction: 'Toca el animal que no pertenece al océano 🐠',
     difficulty: 'easy',
     items: [
       {
         id: '1',
         name: 'Delfín',
-        imageUrl: 'https://images.pexels.com/photos/64219/dolphin-marine-mammals-water-sea-64219.jpeg?auto=compress&cs=tinysrgb&w=300',
+        imageUrl:
+          'https://images.pexels.com/photos/64219/dolphin-marine-mammals-water-sea-64219.jpeg?auto=compress&cs=tinysrgb&w=300',
         category: 'ocean',
         isOddOne: false,
       },
       {
         id: '2',
         name: 'Ballena',
-        imageUrl: 'https://images.pexels.com/photos/1076758/pexels-photo-1076758.jpeg?auto=compress&cs=tinysrgb&w=300',
+        imageUrl:
+          'https://img.freepik.com/vector-gratis/lindo-personaje-dibujos-animados-ballenas_1308-119816.jpg?semt=ais_incoming&w=740&q=80',
         category: 'ocean',
         isOddOne: false,
       },
       {
         id: '3',
         name: 'León',
-        imageUrl: 'https://images.pexels.com/photos/247502/pexels-photo-247502.jpeg?auto=compress&cs=tinysrgb&w=300',
+        imageUrl:
+          'https://images.pexels.com/photos/247502/pexels-photo-247502.jpeg?auto=compress&cs=tinysrgb&w=300',
         category: 'land',
         isOddOne: true,
       },
       {
         id: '4',
         name: 'Tiburón',
-        imageUrl: 'https://images.pexels.com/photos/544551/pexels-photo-544551.jpeg?auto=compress&cs=tinysrgb&w=300',
+        imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrAJAkmrIEtaZ5IFXZLE5ZzvxJ1aI9IHlhTQ&s',
         category: 'ocean',
         isOddOne: false,
       },
@@ -89,34 +100,75 @@ const oddOneOutScenarios: GameScenario[] = [
   {
     id: '2',
     title: 'Frutas vs Verduras',
+    instruction: 'Toca la verdura que no es una fruta 🍎',
     difficulty: 'easy',
     items: [
       {
         id: '1',
         name: 'Manzana',
-        imageUrl: 'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=300',
+        imageUrl:
+          'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=300',
         category: 'fruit',
         isOddOne: false,
       },
       {
         id: '2',
         name: 'Plátano',
-        imageUrl: 'https://images.pexels.com/photos/61127/pexels-photo-61127.jpeg?auto=compress&cs=tinysrgb&w=300',
+        imageUrl:
+          'https://images.pexels.com/photos/61127/pexels-photo-61127.jpeg?auto=compress&cs=tinysrgb&w=300',
         category: 'fruit',
         isOddOne: false,
       },
       {
         id: '3',
         name: 'Zanahoria',
-        imageUrl: 'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg?auto=compress&cs=tinysrgb&w=300',
+        imageUrl:
+          'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg?auto=compress&cs=tinysrgb&w=300',
         category: 'vegetable',
         isOddOne: true,
       },
       {
         id: '4',
         name: 'Naranja',
-        imageUrl: 'https://images.pexels.com/photos/161559/background-bitter-breakfast-bright-161559.jpeg?auto=compress&cs=tinysrgb&w=300',
+        imageUrl:
+          'https://images.pexels.com/photos/161559/background-bitter-breakfast-bright-161559.jpeg?auto=compress&cs=tinysrgb&w=300',
         category: 'fruit',
+        isOddOne: false,
+      },
+    ],
+  },
+  {
+    id: '3',
+    title: 'Objetos de Cocina',
+    instruction: 'Toca el objeto que no pertenece a la cocina 🍳',
+    difficulty: 'easy',
+    items: [
+      {
+        id: '1',
+        name: 'Sartén',
+        imageUrl: 'https://img.freepik.com/vector-gratis/huevo-flotante-frito-ilustracion-icono-vector-dibujos-animados-sarten-concepto-icono-objeto-comida-aislado-vector-premium-estilo-dibujos-animados-plana_138676-3815.jpg?semt=ais_incoming&w=740&q=80',
+        category: 'kitchen',
+        isOddOne: false,
+      },
+      {
+        id: '2',
+        name: 'Cuchara',
+        imageUrl: 'https://img.icons8.com/color/96/spoon.png',
+        category: 'kitchen',
+        isOddOne: false,
+      },
+      {
+        id: '3',
+        name: 'Zapato',
+        imageUrl: 'https://img.icons8.com/color/96/shoes.png',
+        category: 'clothes',
+        isOddOne: true,
+      },
+      {
+        id: '4',
+        name: 'Plato',
+        imageUrl: 'https://img.icons8.com/color/96/plate.png',
+        category: 'kitchen',
         isOddOne: false,
       },
     ],
@@ -127,7 +179,8 @@ const findObjectsGames: FindObjectsGame[] = [
   {
     id: '1',
     title: 'Encuentra Frutas en el Mercado',
-    imageUrl: 'https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=600',
+    imageUrl:
+      'https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=600',
     targetObjects: ['Manzana', 'Plátano', 'Naranja'],
     foundObjects: [],
     level: 1,
@@ -135,7 +188,8 @@ const findObjectsGames: FindObjectsGame[] = [
   {
     id: '2',
     title: 'Busca Juguetes en la Habitación',
-    imageUrl: 'https://images.pexels.com/photos/1148998/pexels-photo-1148998.jpeg?auto=compress&cs=tinysrgb&w=600',
+    imageUrl:
+      'https://images.pexels.com/photos/1148998/pexels-photo-1148998.jpeg?auto=compress&cs=tinysrgb&w=600',
     targetObjects: ['Pelota', 'Oso de Peluche'],
     foundObjects: [],
     level: 2,
@@ -145,23 +199,38 @@ const findObjectsGames: FindObjectsGame[] = [
 const analogyGames: AnalogyGame[] = [
   {
     id: '1',
-    question: 'El pan se puede comer, y el jugo se puede...',
-    options: ['Beber', 'Cocinar', 'Plantar', 'Construir'],
-    correctAnswer: 0,
+    question: 'El pan se...',
+    options: [
+      { text: 'Vuela', imageUrl: 'https://img.icons8.com/clouds/100/airplane-take-off.png' },
+      { text: 'Toma', imageUrl: 'https://i.pinimg.com/736x/d3/92/5a/d3925aaf0a0a7b1fc61796b669b02a17.jpg' },
+      { text: 'Duerme', imageUrl: 'https://img.freepik.com/vector-gratis/personaje-dibujos-animados-doodle-dormir-nino-aislado_1308-63135.jpg' },
+      { text: 'Come', imageUrl: 'https://static.vecteezy.com/system/resources/previews/007/152/952/non_2x/cartoon-little-school-boy-eating-bread-vector.jpg' },
+    ],
+    correctAnswer: 3,
     level: 1,
   },
   {
     id: '2',
-    question: 'Los peces nadan en el agua, y los pájaros vuelan en el...',
-    options: ['Árbol', 'Aire', 'Nido', 'Nubes'],
-    correctAnswer: 1,
+    question: 'El coche se...',
+    options: [
+      { text: 'Maneja', imageUrl: 'https://img.icons8.com/clouds/100/car.png' },
+      { text: 'Lee', imageUrl: 'https://img.freepik.com/vector-gratis/nino-sentado-suelo-leyendo-libro_1308-92292.jpg?semt=ais_hybrid&w=740&q=80' },
+      { text: 'Nada', imageUrl: 'https://img.icons8.com/clouds/100/swimming.png' },
+      { text: 'Baila', imageUrl: 'https://img.freepik.com/vector-gratis/pareja-nino-diferente-raza-bailando-juntos_1308-138127.jpg?semt=ais_incoming&w=740&q=80' },
+    ],
+    correctAnswer: 0,
     level: 1,
   },
   {
     id: '3',
-    question: 'El sol sale de día, y la luna sale de...',
-    options: ['Mañana', 'Tarde', 'Noche', 'Siempre'],
-    correctAnswer: 2,
+    question: 'El mono se...',
+    options: [
+      { text: 'Cuelga', imageUrl: 'https://img.icons8.com/clouds/100/monkey.png' },
+      { text: 'Nada', imageUrl: 'https://img.icons8.com/clouds/100/swimming.png' },
+      { text: 'Vuela', imageUrl: 'https://img.icons8.com/clouds/100/airplane.png' },
+      { text: 'Escribe', imageUrl: 'https://img.icons8.com/clouds/100/writing.png' },
+    ],
+    correctAnswer: 0,
     level: 2,
   },
 ];
@@ -173,21 +242,20 @@ export default function GamesScreen() {
   const [currentScenario, setCurrentScenario] = useState<GameScenario>(oddOneOutScenarios[0]);
   const [currentFindGame, setCurrentFindGame] = useState<FindObjectsGame>(findObjectsGames[0]);
   const [currentAnalogy, setCurrentAnalogy] = useState<AnalogyGame>(analogyGames[0]);
-  
-  // Real progress tracking with useState
+
+  // progreso real
   const [totalScore, setTotalScore] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [totalAnswers, setTotalAnswers] = useState(0);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
-  
+
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [showNextButton, setShowNextButton] = useState(false);
   const [avatarEmotion, setAvatarEmotion] = useState<'happy' | 'excited' | 'thinking' | 'celebrating'>('happy');
 
-  // Default avatar - in real app this would come from user's saved avatar
   const userAvatar = {
     body: '🐠',
     eyes: '😊',
@@ -204,113 +272,115 @@ export default function GamesScreen() {
 
     setTimeout(() => {
       if (item.isOddOne) {
-        // Update real progress tracking
         const points = 10;
-        setTotalScore(prev => prev + points);
-        setCorrectAnswers(prev => prev + 1);
-        setTotalAnswers(prev => prev + 1);
-        setCurrentStreak(prev => {
-          const newStreak = prev + 1;
-          if (newStreak > bestStreak) {
-            setBestStreak(newStreak);
-          }
-          return newStreak;
+        setTotalScore((prev) => prev + points);
+        setCorrectAnswers((prev) => prev + 1);
+        setTotalAnswers((prev) => prev + 1);
+        setCurrentStreak((prev) => {
+          const next = prev + 1;
+          if (next > bestStreak) setBestStreak(next);
+          return next;
         });
-        
+
         setShowNextButton(true);
         setAvatarEmotion('celebrating');
         Alert.alert(
           '¡Excelente! 🎉',
-          `¡Encontraste el diferente! ${item.name} no pertenece con los animales del océano.`,
-          [{ text: '¡Genial!', onPress: () => {} }]
+          `¡Encontraste el diferente! ${item.name} no pertenece.`,
+          [{ text: '¡Genial!' }]
         );
       } else {
         setAvatarEmotion('thinking');
-        setTotalAnswers(prev => prev + 1);
-        setCurrentStreak(0); // Reset streak on wrong answer
-        
+        setTotalAnswers((prev) => prev + 1);
+        setCurrentStreak(0);
+
         Alert.alert(
           '¡Inténtalo de nuevo! 🤔',
-          `Esa no es la respuesta correcta. ${item.name} pertenece al océano. ¡Inténtalo otra vez!`,
-          [{ text: 'OK', onPress: () => {
-            setSelectedItem(null);
-            setAvatarEmotion('happy');
-          }}]
+          `${item.name} sí pertenece al grupo.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                setSelectedItem(null);
+                setAvatarEmotion('happy');
+              },
+            },
+          ]
         );
       }
-    }, 1000);
+    }, 600);
   };
 
   const handleAnalogyAnswer = (answerIndex: number) => {
+    if (selectedAnswer !== null) return;
+
     setSelectedAnswer(answerIndex);
     setAvatarEmotion('thinking');
-    
+
     setTimeout(() => {
       if (answerIndex === currentAnalogy.correctAnswer) {
-        // Update real progress tracking
         const points = 15;
-        setTotalScore(prev => prev + points);
-        setCorrectAnswers(prev => prev + 1);
-        setTotalAnswers(prev => prev + 1);
-        setCurrentStreak(prev => {
-          const newStreak = prev + 1;
-          if (newStreak > bestStreak) {
-            setBestStreak(newStreak);
-          }
-          return newStreak;
+        setTotalScore((prev) => prev + points);
+        setCorrectAnswers((prev) => prev + 1);
+        setTotalAnswers((prev) => prev + 1);
+        setCurrentStreak((prev) => {
+          const next = prev + 1;
+          if (next > bestStreak) setBestStreak(next);
+          return next;
         });
-        
+
         setShowNextButton(true);
         setAvatarEmotion('celebrating');
-        Alert.alert(
-          '¡Correcto! 🌟',
-          '¡Excelente razonamiento! Completaste la analogía perfectamente.',
-          [{ text: '¡Siguiente!', onPress: () => {} }]
-        );
+        Alert.alert('¡Correcto! 🌟', '¡Excelente razonamiento!', [{ text: '¡Siguiente!' }]);
       } else {
         setAvatarEmotion('thinking');
-        setTotalAnswers(prev => prev + 1);
-        setCurrentStreak(0); // Reset streak on wrong answer
-        
-        Alert.alert(
-          '¡No es correcto! 🤔',
-          'Piensa en qué haces con el jugo. ¡Inténtalo de nuevo!',
-          [{ text: 'Intentar otra vez', onPress: () => {
-            setSelectedAnswer(null);
-            setAvatarEmotion('happy');
-          }}]
-        );
+        setTotalAnswers((prev) => prev + 1);
+        setCurrentStreak(0);
+
+        Alert.alert('¡No es correcto! 🤔', 'Piensa de nuevo.', [
+          {
+            text: 'Intentar otra vez',
+            onPress: () => {
+              setSelectedAnswer(null);
+              setAvatarEmotion('happy');
+            },
+          },
+        ]);
       }
-    }, 1000);
+    }, 600);
   };
 
   const handleNextLevel = () => {
+    // ✅ usar actualizaciones funcionales evita cierres obsoletos y asegura que el botón responda
     setShowNextButton(false);
     setSelectedItem(null);
     setSelectedAnswer(null);
     setAvatarEmotion('excited');
-    
+
     if (gameMode === 'odd-one-out') {
-      const nextScenarioIndex = (oddOneOutScenarios.findIndex(s => s.id === currentScenario.id) + 1) % oddOneOutScenarios.length;
+      const nextScenarioIndex =
+        (oddOneOutScenarios.findIndex((s) => s.id === currentScenario.id) + 1) %
+        oddOneOutScenarios.length;
       setCurrentScenario(oddOneOutScenarios[nextScenarioIndex]);
     } else if (gameMode === 'analogies') {
-      const nextAnalogyIndex = (analogyGames.findIndex(a => a.id === currentAnalogy.id) + 1) % analogyGames.length;
+      const nextAnalogyIndex =
+        (analogyGames.findIndex((a) => a.id === currentAnalogy.id) + 1) % analogyGames.length;
       setCurrentAnalogy(analogyGames[nextAnalogyIndex]);
     } else if (gameMode === 'find-objects') {
-      const nextGameIndex = (findObjectsGames.findIndex(g => g.id === currentFindGame.id) + 1) % findObjectsGames.length;
+      const nextGameIndex =
+        (findObjectsGames.findIndex((g) => g.id === currentFindGame.id) + 1) %
+        findObjectsGames.length;
       setCurrentFindGame(findObjectsGames[nextGameIndex]);
     }
-    
-    setCurrentLevel(currentLevel + 1);
-    
-    setTimeout(() => {
-      setAvatarEmotion('happy');
-    }, 2000);
+
+    setCurrentLevel((prev) => prev + 1);
+
+    setTimeout(() => setAvatarEmotion('happy'), 1200);
   };
 
   const getItemStyle = (item: GameItem) => {
     if (!selectedItem) return styles.gameItem;
-    
+
     if (selectedItem === item.id) {
       if (item.isOddOne) {
         return [styles.gameItem, styles.correctItem];
@@ -318,13 +388,12 @@ export default function GamesScreen() {
         return [styles.gameItem, styles.incorrectItem];
       }
     }
-    
     return [styles.gameItem, styles.fadedItem];
   };
 
   const getAnswerStyle = (index: number) => {
     if (selectedAnswer === null) return styles.answerOption;
-    
+
     if (selectedAnswer === index) {
       if (index === currentAnalogy.correctAnswer) {
         return [styles.answerOption, styles.correctAnswer];
@@ -332,18 +401,14 @@ export default function GamesScreen() {
         return [styles.answerOption, styles.incorrectAnswer];
       }
     }
-    
     return [styles.answerOption, styles.fadedAnswer];
   };
 
   const renderGameMenu = () => (
     <View style={styles.menuContainer}>
       <Text style={styles.menuTitle}>Elige tu Juego Favorito</Text>
-      
-      <AnimatedButton 
-        onPress={() => setGameMode('odd-one-out')}
-        style={styles.gameMenuCard}
-      >
+
+      <AnimatedButton onPress={() => setGameMode('odd-one-out')} style={styles.gameMenuCard}>
         <LinearGradient colors={['#FF6B9D', '#FF8E9B']} style={styles.gameMenuGradient}>
           <Text style={styles.gameMenuEmoji}>🔍</Text>
           <Text style={styles.gameMenuTitle}>Encuentra el Diferente</Text>
@@ -351,10 +416,7 @@ export default function GamesScreen() {
         </LinearGradient>
       </AnimatedButton>
 
-      <AnimatedButton 
-        onPress={() => setGameMode('find-objects')}
-        style={styles.gameMenuCard}
-      >
+      <AnimatedButton onPress={() => setGameMode('find-objects')} style={styles.gameMenuCard}>
         <LinearGradient colors={['#4ECDC4', '#44A08D']} style={styles.gameMenuGradient}>
           <Text style={styles.gameMenuEmoji}>🖼️</Text>
           <Text style={styles.gameMenuTitle}>Busca Objetos</Text>
@@ -362,14 +424,11 @@ export default function GamesScreen() {
         </LinearGradient>
       </AnimatedButton>
 
-      <AnimatedButton 
-        onPress={() => setGameMode('analogies')}
-        style={styles.gameMenuCard}
-      >
+      <AnimatedButton onPress={() => setGameMode('analogies')} style={styles.gameMenuCard}>
         <LinearGradient colors={['#A8E6CF', '#7FCDCD']} style={styles.gameMenuGradient}>
           <Text style={styles.gameMenuEmoji}>🧠</Text>
           <Text style={styles.gameMenuTitle}>Completa la Frase</Text>
-          <Text style={styles.gameMenuDescription}>Termina las oraciones</Text>
+          <Text style={styles.gameMenuDescription}>Termina las oraciones con imágenes</Text>
         </LinearGradient>
       </AnimatedButton>
     </View>
@@ -392,7 +451,7 @@ export default function GamesScreen() {
         <Text style={styles.levelText}>Nivel {currentLevel}</Text>
       </View>
 
-      <Text style={styles.instruction}>¡Toca el animal que NO vive en el océano!</Text>
+      <Text style={styles.instruction}>{currentScenario.instruction}</Text>
 
       <View style={styles.gameGrid}>
         {currentScenario.items.map((item) => (
@@ -435,13 +494,13 @@ export default function GamesScreen() {
         <Text style={styles.levelText}>Nivel {currentLevel}</Text>
       </View>
 
-      <Text style={styles.instruction}>¡Encuentra y toca las frutas en esta imagen del mercado!</Text>
+      <Text style={styles.instruction}>¡Encuentra y toca los objetos indicados!</Text>
 
       <View style={styles.findGameContainer}>
-        <TouchableOpacity style={styles.findImageContainer}>
+        <TouchableOpacity style={styles.findImageContainer} activeOpacity={0.9}>
           <Image source={{ uri: currentFindGame.imageUrl }} style={styles.findImage} />
         </TouchableOpacity>
-        
+
         <View style={styles.targetList}>
           <Text style={styles.targetTitle}>Busca estos objetos:</Text>
           {currentFindGame.targetObjects.map((obj, index) => (
@@ -478,24 +537,20 @@ export default function GamesScreen() {
         <Text style={styles.levelText}>Nivel {currentLevel}</Text>
       </View>
 
-      {/* Real-time Progress Display */}
       <View style={styles.progressDisplay}>
         <Text style={styles.progressText}>
-          🎯 Aciertos: {correctAnswers}/{totalAnswers} ({totalAnswers > 0 ? Math.round((correctAnswers/totalAnswers) * 100) : 0}%)
+          🎯 Aciertos: {correctAnswers}/{totalAnswers} ({totalAnswers > 0 ? Math.round((correctAnswers / totalAnswers) * 100) : 0}
+          %)
         </Text>
-        <Text style={styles.progressText}>
-          🔥 Racha actual: {currentStreak}
-        </Text>
-        <Text style={styles.progressText}>
-          🏆 Mejor racha: {bestStreak}
-        </Text>
+        <Text style={styles.progressText}>🔥 Racha actual: {currentStreak}</Text>
+        <Text style={styles.progressText}>🏆 Mejor racha: {bestStreak}</Text>
       </View>
 
       <View style={styles.analogyContainer}>
         <View style={styles.questionContainer}>
           <Text style={styles.analogyQuestion}>{currentAnalogy.question}</Text>
         </View>
-        
+
         <View style={styles.answersContainer}>
           {currentAnalogy.options.map((option, index) => (
             <AnimatedButton
@@ -504,7 +559,8 @@ export default function GamesScreen() {
               disabled={selectedAnswer !== null}
               style={getAnswerStyle(index)}
             >
-              <Text style={styles.answerText}>{option}</Text>
+              <Image source={{ uri: option.imageUrl }} style={styles.answerImage} />
+              <Text style={styles.answerText}>{option.text}</Text>
             </AnimatedButton>
           ))}
         </View>
@@ -524,15 +580,9 @@ export default function GamesScreen() {
     <View style={styles.container}>
       <LinearGradient colors={['#87CEEB', '#4682B4', '#1E90FF']} style={styles.gradient}>
         <InteractiveBackground />
-        
-        {/* Game Avatar */}
-        <GameAvatar 
-          avatar={userAvatar} 
-          emotion={avatarEmotion} 
-          size={70} 
-          position="top-right" 
-        />
-        
+
+        <GameAvatar avatar={userAvatar} emotion={avatarEmotion} size={70} position="top-right" />
+
         <SafeAreaView style={styles.safeArea}>
           <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
             {gameMode === 'menu' && renderGameMenu()}
@@ -547,23 +597,11 @@ export default function GamesScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  gradient: {
-    flex: 1,
-  },
-  safeArea: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 20,
-  },
-  menuContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
+  container: { flex: 1 },
+  gradient: { flex: 1 },
+  safeArea: { flex: 1 },
+  scrollContent: { flexGrow: 1, padding: 20 },
+  menuContainer: { flex: 1, justifyContent: 'center' },
   menuTitle: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -583,15 +621,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10,
   },
-  gameMenuGradient: {
-    borderRadius: 25,
-    padding: 24,
-    alignItems: 'center',
-  },
-  gameMenuEmoji: {
-    fontSize: 40,
-    marginBottom: 12,
-  },
+  gameMenuGradient: { borderRadius: 25, padding: 24, alignItems: 'center' },
+  gameMenuEmoji: { fontSize: 40, marginBottom: 12 },
   gameMenuTitle: {
     fontSize: 22,
     fontWeight: 'bold',
@@ -601,15 +632,9 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
-  gameMenuDescription: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    opacity: 0.95,
-    textAlign: 'center',
-  },
-  gameContainer: {
-    flex: 1,
-  },
+  gameMenuDescription: { fontSize: 16, color: '#FFFFFF', opacity: 0.95, textAlign: 'center' },
+
+  gameContainer: { flex: 1 },
   gameHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -642,10 +667,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
   },
-  scoreEmoji: {
-    fontSize: 18,
-    marginRight: 4,
-  },
+  scoreEmoji: { fontSize: 18, marginRight: 4 },
   scoreText: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -654,10 +676,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
-  levelIndicator: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+  levelIndicator: { alignItems: 'center', marginBottom: 20 },
   levelText: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -718,17 +737,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
   },
-  correctItem: {
-    backgroundColor: '#4CAF50',
-    transform: [{ scale: 1.05 }],
-  },
-  incorrectItem: {
-    backgroundColor: '#F44336',
-    transform: [{ scale: 0.95 }],
-  },
-  fadedItem: {
-    opacity: 0.5,
-  },
+  correctItem: { backgroundColor: '#4CAF50', transform: [{ scale: 1.05 }] },
+  incorrectItem: { backgroundColor: '#F44336', transform: [{ scale: 0.95 }] },
+  fadedItem: { opacity: 0.5 },
   itemImage: {
     width: 90,
     height: 90,
@@ -737,15 +748,9 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: 'rgba(255, 255, 255, 0.3)',
   },
-  itemName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    textAlign: 'center',
-  },
-  findGameContainer: {
-    alignItems: 'center',
-  },
+  itemName: { fontSize: 16, fontWeight: '600', color: '#333', textAlign: 'center' },
+
+  findGameContainer: { alignItems: 'center' },
   findImageContainer: {
     borderRadius: 20,
     overflow: 'hidden',
@@ -756,10 +761,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     marginBottom: 20,
   },
-  findImage: {
-    width: width - 40,
-    height: 220,
-  },
+  findImage: { width: width - 40, height: 220 },
   targetList: {
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 20,
@@ -772,13 +774,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 8,
   },
-  targetTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
+  targetTitle: { fontSize: 20, fontWeight: 'bold', color: '#333', marginBottom: 12, textAlign: 'center' },
   targetItemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -787,18 +783,10 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 15,
   },
-  targetItemEmoji: {
-    fontSize: 18,
-    marginRight: 10,
-  },
-  targetItem: {
-    fontSize: 16,
-    color: '#333',
-    fontWeight: '600',
-  },
-  analogyContainer: {
-    alignItems: 'center',
-  },
+  targetItemEmoji: { fontSize: 18, marginRight: 10 },
+  targetItem: { fontSize: 16, color: '#333', fontWeight: '600' },
+
+  analogyContainer: { alignItems: 'center' },
   questionContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: 20,
@@ -816,10 +804,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
-  answersContainer: {
-    width: '100%',
-    marginBottom: 20,
-  },
+  answersContainer: { width: '100%', marginBottom: 20 },
   answerOption: {
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 20,
@@ -832,20 +817,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 8,
   },
-  correctAnswer: {
-    backgroundColor: '#4CAF50',
-  },
-  incorrectAnswer: {
-    backgroundColor: '#F44336',
-  },
-  fadedAnswer: {
-    opacity: 0.5,
-  },
-  answerText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-  },
+  correctAnswer: { backgroundColor: '#4CAF50' },
+  incorrectAnswer: { backgroundColor: '#F44336' },
+  fadedAnswer: { opacity: 0.5 },
+  answerText: { fontSize: 18, fontWeight: '600', color: '#333' },
+  answerImage: { width: 60, height: 60, marginBottom: 10 },
+
   nextButton: {
     borderRadius: 25,
     elevation: 8,
@@ -855,11 +832,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     marginTop: 20,
   },
-  nextButtonGradient: {
-    borderRadius: 25,
-    paddingHorizontal: 30,
-    paddingVertical: 16,
-  },
+  nextButtonGradient: { borderRadius: 25, paddingHorizontal: 30, paddingVertical: 16 },
   nextButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
