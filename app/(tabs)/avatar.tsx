@@ -4,6 +4,13 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FloatingAvatar, { AvatarCustomization } from '@/components/FloatingAvatar';
 
+const PALETTE = {
+  mint: '#87d4a3',
+  powderBlue: '#b0e0e6',
+  lightPink: '#ffb6c1',
+  lightYellow: '#fae470'
+};
+
 const eyeOptions = [['variant01'], ['variant02'], ['variant03']];
 const mouthOptions = [['smile01'], ['smile02'], ['smile03']];
 const skinOptions = [['b6e3f4'], ['d1d4f9'], ['c0aede'], ['ffdfbf']];
@@ -19,11 +26,11 @@ export default function AvatarScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>🎨 ¡Crea tu Avatar con DiceBear!</Text>
+        <Text style={styles.title}>✨ ¡Personaliza tu Avatar! ✨</Text>
 
         {/* Avatar Preview */}
         <View style={styles.avatarPreview}>
-          <FloatingAvatar avatar={avatar} size={220} />
+          <FloatingAvatar avatar={avatar} size={250} /> {/* Tamaño incrementado */}
         </View>
 
         {/* Opciones: ojos */}
@@ -81,35 +88,81 @@ export default function AvatarScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#87CEEB' },
-  scrollContent: { padding: 20, alignItems: 'center' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: '#fff' },
+  container: { 
+    flex: 1, 
+    backgroundColor: PALETTE.powderBlue // Fondo azul polvo
+  },
+  scrollContent: { 
+    padding: 25, 
+    alignItems: 'center'
+  },
+  title: { 
+    fontSize: 28, // Texto más grande
+    fontWeight: '800', // Más bold
+    marginBottom: 25,
+    color: '#333333', // Color más oscuro para mejor legibilidad
+    textAlign: 'center',
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+  },
   avatarPreview: {
-    marginBottom: 24,
-    backgroundColor: '#fff',
+    marginBottom: 30,
+    backgroundColor: PALETTE.lightPink, // Fondo rosa claro
     borderRadius: 200,
-    padding: 12,
-    elevation: 5,
+    padding: 15,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    borderWidth: 3,
+    borderColor: '#fff'
   },
-  subtitle: { fontSize: 18, fontWeight: '600', marginBottom: 8, color: '#fff' },
+  subtitle: { 
+    fontSize: 22, // Texto más grande
+    fontWeight: '700', // Más bold
+    marginBottom: 12,
+    marginTop: 20,
+    color: '#333333', // Color más oscuro para mejor legibilidad
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
   option: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
+    backgroundColor: PALETTE.lightYellow, // Fondo amarillo claro
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 25,
+    marginRight: 12,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
   },
-  selectedOption: { backgroundColor: '#FFD700', fontWeight: 'bold' },
-  colorOption: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
+  selectedOption: { 
+    backgroundColor: PALETTE.mint, // Verde menta para selección
+    transform: [{ scale: 1.05 }], // Ligero incremento de tamaño
     borderWidth: 2,
+    borderColor: '#fff'
+  },
+  colorOption: {
+    width: 50, // Más grandes
+    height: 50, // Más grandes
+    borderRadius: 25,
+    marginRight: 15,
+    borderWidth: 3,
     borderColor: '#fff',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
   },
   selectedColor: {
-    borderColor: '#FFD700',
-    borderWidth: 3,
+    borderColor: PALETTE.mint, // Verde menta para el borde de selección
+    borderWidth: 4,
+    transform: [{ scale: 1.1 }], // Ligero incremento de tamaño
   },
 });

@@ -1,38 +1,53 @@
 import { Tabs } from 'expo-router';
 import { Chrome as Home, Settings, Trophy, Gamepad2, User } from 'lucide-react-native';
 
+const PALETTE = {
+  mint: '#87d4a3',
+  powderBlue: '#b0e0e6',
+  lightPink: '#ffb6c1',
+  lightYellow: '#fae470',
+  crema: '#e1e3e1'
+};
+
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#FF6B9D',
-        tabBarInactiveTintColor: '#87CEEB',
+        tabBarActiveTintColor: PALETTE.mint, // Color activo verde menta
+        tabBarInactiveTintColor: PALETTE.lightPink, // Color inactivo rosa claro
         tabBarStyle: {
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          backgroundColor: PALETTE.crema, // Fondo azul polvo
           borderTopWidth: 0,
-          elevation: 10,
+          elevation: 15, // Aumentada la elevación
           shadowColor: '#000',
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 10,
-          height: 85,
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.2,
+          shadowRadius: 15,
+          height: 95, // Altura ligeramente aumentada
           paddingBottom: 25,
-          paddingTop: 10,
-          borderTopLeftRadius: 25,
-          borderTopRightRadius: 25,
+          paddingTop: 15,
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
         },
         tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '600',
+          fontSize: 16, // Texto más grande
+          fontWeight: '800', // Texto más bold
+          marginTop: 8, // Más espacio arriba del texto
+          textShadowColor: 'rgba(0, 0, 0, 0.1)',
+          textShadowOffset: { width: 0, height: 1 },
+          textShadowRadius: 2,
+        },
+        tabBarIconStyle: {
+          marginTop: 8, // Más espacio arriba de los iconos
         },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ size, color }) => (
-            <Home size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Home size={32} color={color} strokeWidth={3} /> // Iconos más grandes y más gruesos
           ),
         }}
       />
@@ -40,8 +55,8 @@ export default function TabLayout() {
         name="games"
         options={{
           title: 'Games',
-          tabBarIcon: ({ size, color }) => (
-            <Gamepad2 size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Gamepad2 size={32} color={color} strokeWidth={3} />
           ),
         }}
       />
@@ -49,8 +64,8 @@ export default function TabLayout() {
         name="avatar"
         options={{
           title: 'Avatar',
-          tabBarIcon: ({ size, color }) => (
-            <User size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <User size={32} color={color} strokeWidth={3} />
           ),
         }}
       />
@@ -58,8 +73,8 @@ export default function TabLayout() {
         name="progress"
         options={{
           title: 'Progress',
-          tabBarIcon: ({ size, color }) => (
-            <Trophy size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Trophy size={32} color={color} strokeWidth={3} />
           ),
         }}
       />

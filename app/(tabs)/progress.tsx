@@ -30,6 +30,23 @@ interface CategoryProgress {
   color: string;
 }
 
+// Primero, definimos la paleta de colores
+const PALETTE = {
+  mint: '#87d4a3',
+  powderBlue: '#b0e0e6',
+  lightPink: '#ffb6c1',
+  lightYellow: '#fae470'
+};
+
+// Actualizamos las categorías para usar la nueva paleta
+const categoryProgress: CategoryProgress[] = [
+  { name: 'Animals', icon: '🐾', gamesPlayed: 15, accuracy: 87, color: PALETTE.lightPink },
+  { name: 'Food', icon: '🍎', gamesPlayed: 12, accuracy: 92, color: PALETTE.mint },
+  { name: 'Transport', icon: '🚗', gamesPlayed: 8, accuracy: 75, color: PALETTE.powderBlue },
+  { name: 'Shapes', icon: '⭕', gamesPlayed: 6, accuracy: 95, color: PALETTE.lightYellow },
+  { name: 'Colors', icon: '🌈', gamesPlayed: 4, accuracy: 88, color: PALETTE.lightPink },
+];
+
 const achievements: Achievement[] = [
   {
     id: '1',
@@ -69,14 +86,6 @@ const achievements: Achievement[] = [
   },
 ];
 
-const categoryProgress: CategoryProgress[] = [
-  { name: 'Animals', icon: '🐾', gamesPlayed: 15, accuracy: 87, color: '#FF6B6B' },
-  { name: 'Food', icon: '🍎', gamesPlayed: 12, accuracy: 92, color: '#4ECDC4' },
-  { name: 'Transport', icon: '🚗', gamesPlayed: 8, accuracy: 75, color: '#45B7D1' },
-  { name: 'Shapes', icon: '⭕', gamesPlayed: 6, accuracy: 95, color: '#96CEB4' },
-  { name: 'Colors', icon: '🌈', gamesPlayed: 4, accuracy: 88, color: '#FFEAA7' },
-];
-
 export default function ProgressScreen() {
   const totalGamesPlayed = categoryProgress.reduce((sum, cat) => sum + cat.gamesPlayed, 0);
   const overallAccuracy = Math.round(
@@ -86,7 +95,7 @@ export default function ProgressScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#87CEEB', '#4682B4', '#1E90FF']} style={styles.gradient}>
+      <View style={styles.gradient}>
         <BubbleBackground />
         <SafeAreaView style={styles.safeArea}>
           <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -240,7 +249,7 @@ export default function ProgressScreen() {
             </View>
           </ScrollView>
         </SafeAreaView>
-      </LinearGradient>
+      </View>
     </View>
   );
 }
@@ -251,6 +260,7 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
+    backgroundColor: PALETTE.powderBlue, // Fondo azul polvo
   },
   safeArea: {
     flex: 1,
@@ -288,9 +298,9 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#333333',
     marginBottom: 8,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
@@ -308,6 +318,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 4,
     borderRadius: 20,
+    backgroundColor: PALETTE.mint, // Cambiamos a verde menta
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
@@ -318,6 +329,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 16,
     alignItems: 'center',
+    backgroundColor: PALETTE.mint, // Verde menta para estadísticas
   },
   statEmoji: {
     fontSize: 24,
@@ -353,13 +365,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFFFFF',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    color: '#333333',
+    textShadowColor: 'rgba(255, 255, 255, 0.5)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
   categoryCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     padding: 16,
     marginBottom: 12,
@@ -368,6 +380,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: PALETTE.mint, // Borde verde menta
   },
   categoryHeader: {
     flexDirection: 'row',
@@ -402,6 +416,7 @@ const styles = StyleSheet.create({
   progressFill: {
     height: '100%',
     borderRadius: 4,
+    backgroundColor: PALETTE.mint, // Barras de progreso en verde menta
   },
   achievementsGrid: {
     flexDirection: 'row',
@@ -410,7 +425,7 @@ const styles = StyleSheet.create({
   },
   achievementCard: {
     width: '48%',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     padding: 16,
     marginBottom: 12,
@@ -420,6 +435,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
+    borderTopWidth: 4,
+    borderTopColor: PALETTE.lightYellow, // Borde amarillo claro
   },
   lockedAchievement: {
     opacity: 0.7,
@@ -453,7 +470,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   unlockedBadge: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: PALETTE.mint, // Verde menta para logros desbloqueados
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
@@ -464,7 +481,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   goalCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
@@ -473,6 +490,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
+    borderTopWidth: 4,
+    borderTopColor: PALETTE.lightPink, // Borde rosa claro
   },
   goalTitle: {
     fontSize: 20,
@@ -489,7 +508,7 @@ const styles = StyleSheet.create({
   },
   goalEncouragement: {
     fontSize: 16,
-    color: '#4CAF50',
+    color: PALETTE.mint, // Verde menta para texto de ánimo
     fontWeight: '600',
     marginTop: 12,
     textAlign: 'center',

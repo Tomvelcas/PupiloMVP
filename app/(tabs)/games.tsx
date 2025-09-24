@@ -19,6 +19,14 @@ import GameAvatar from '@/components/GameAvatar';
 
 const { width } = Dimensions.get('window');
 
+const PALETTE = {
+  mint: '#87d4a3',
+  powderBlue: '#b0e0e6',
+  lightPink: '#ffb6c1',
+  lightYellow: '#fae470',
+  backgroundColor: '#b0e0e6' // Añadimos el color de fondo
+};
+
 interface GameItem {
   id: string;
   name: string;
@@ -409,28 +417,28 @@ export default function GamesScreen() {
     <View style={styles.menuContainer}>
       <Text style={styles.menuTitle}>Elige tu Juego Favorito</Text>
 
-      <AnimatedButton onPress={() => setGameMode('odd-one-out')} style={styles.gameMenuCard}>
-        <LinearGradient colors={['#FF6B9D', '#FF8E9B']} style={styles.gameMenuGradient}>
+      <AnimatedButton onPress={() => setGameMode('odd-one-out')} style={{ ...styles.gameMenuCard, backgroundColor: PALETTE.mint }}>
+        <View style={styles.gameMenuContent}>
           <Text style={styles.gameMenuEmoji}>🔍</Text>
           <Text style={styles.gameMenuTitle}>Encuentra el Diferente</Text>
           <Text style={styles.gameMenuDescription}>Busca lo que no pertenece</Text>
-        </LinearGradient>
+        </View>
       </AnimatedButton>
 
-      <AnimatedButton onPress={() => setGameMode('find-objects')} style={styles.gameMenuCard}>
-        <LinearGradient colors={['#4ECDC4', '#44A08D']} style={styles.gameMenuGradient}>
+      <AnimatedButton onPress={() => setGameMode('find-objects')} style={Object.assign({}, styles.gameMenuCard, { backgroundColor: PALETTE.lightYellow })}>
+        <View style={styles.gameMenuContent}>
           <Text style={styles.gameMenuEmoji}>🖼️</Text>
           <Text style={styles.gameMenuTitle}>Busca Objetos</Text>
           <Text style={styles.gameMenuDescription}>Encuentra cosas en las fotos</Text>
-        </LinearGradient>
+        </View>
       </AnimatedButton>
 
-      <AnimatedButton onPress={() => setGameMode('analogies')} style={styles.gameMenuCard}>
-        <LinearGradient colors={['#A8E6CF', '#7FCDCD']} style={styles.gameMenuGradient}>
+      <AnimatedButton onPress={() => setGameMode('analogies')} style={Object.assign({}, styles.gameMenuCard, { backgroundColor: PALETTE.lightPink })}>
+        <View style={styles.gameMenuContent}>
           <Text style={styles.gameMenuEmoji}>🧠</Text>
           <Text style={styles.gameMenuTitle}>Completa la Frase</Text>
           <Text style={styles.gameMenuDescription}>Termina las oraciones con imágenes</Text>
-        </LinearGradient>
+        </View>
       </AnimatedButton>
     </View>
   );
@@ -439,7 +447,7 @@ export default function GamesScreen() {
     <View style={styles.gameContainer}>
       <View style={styles.gameHeader}>
         <AnimatedButton onPress={() => setGameMode('menu')} style={styles.backButton}>
-          <ArrowLeft size={24} color="#FFFFFF" />
+          <ArrowLeft size={24} color="#000000" />
         </AnimatedButton>
         <Text style={styles.gameTitle}>{currentScenario.title}</Text>
         <View style={styles.scoreContainer}>
@@ -509,7 +517,7 @@ export default function GamesScreen() {
     <View style={styles.gameContainer}>
       <View style={styles.gameHeader}>
         <AnimatedButton onPress={() => setGameMode('menu')} style={styles.backButton}>
-          <ArrowLeft size={24} color="#FFFFFF" />
+          <ArrowLeft size={24} color="#000000" />
         </AnimatedButton>
         <Text style={styles.gameTitle}>{currentFindGame.title}</Text>
         <View style={styles.scoreContainer}>
@@ -580,7 +588,7 @@ export default function GamesScreen() {
     <View style={styles.gameContainer}>
       <View style={styles.gameHeader}>
         <AnimatedButton onPress={() => setGameMode('menu')} style={styles.backButton}>
-          <ArrowLeft size={24} color="#FFFFFF" />
+          <ArrowLeft size={24} color="#000000" />
         </AnimatedButton>
         <Text style={styles.gameTitle}>Completa la Frase</Text>
         <View style={styles.scoreContainer}>
@@ -667,11 +675,9 @@ export default function GamesScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#87CEEB', '#4682B4', '#1E90FF']} style={styles.gradient}>
+      <View style={styles.gradient}>
         <InteractiveBackground />
-
         <GameAvatar avatar={userAvatar} emotion={avatarEmotion} size={70} position="top-right" />
-
         <SafeAreaView style={styles.safeArea}>
           <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
             {gameMode === 'menu' && renderGameMenu()}
@@ -680,26 +686,37 @@ export default function GamesScreen() {
             {gameMode === 'analogies' && renderAnalogies()}
           </ScrollView>
         </SafeAreaView>
-      </LinearGradient>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  gradient: { flex: 1 },
-  safeArea: { flex: 1 },
-  scrollContent: { flexGrow: 1, padding: 20 },
-  menuContainer: { flex: 1, justifyContent: 'center' },
+  container: { 
+    flex: 1 
+  },
+  gradient: { 
+    flex: 1,
+    backgroundColor: '#b0e0e6' // Cambiamos el fondo a powder blue
+  },
+  safeArea: { 
+    flex: 1 
+  },
+  scrollContent: { 
+    flexGrow: 1, 
+    padding: 20 
+  },
+  menuContainer: { 
+    flex: 1, 
+    justifyContent: 'center',
+    gap: 20
+  },
   menuTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#333333',
     textAlign: 'center',
     marginBottom: 40,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
   },
   gameMenuCard: {
     borderRadius: 25,
@@ -707,22 +724,33 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 10,
+    width: '100%',
+    minHeight: 150,
+    alignSelf: 'center',
+    maxWidth: 500,
   },
-  gameMenuGradient: { borderRadius: 25, padding: 24, alignItems: 'center' },
-  gameMenuEmoji: { fontSize: 40, marginBottom: 12 },
+  gameMenuContent: {
+    padding: 24,
+    alignItems: 'center',
+  },
+  gameMenuEmoji: { 
+    fontSize: 40, 
+    marginBottom: 12 
+  },
   gameMenuTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#333333',
     marginBottom: 8,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
   },
-  gameMenuDescription: { fontSize: 16, color: '#FFFFFF', opacity: 0.95, textAlign: 'center' },
-
+  gameMenuDescription: { 
+    fontSize: 16, 
+    color: '#555555', 
+    textAlign: 'center' 
+  },
+  
   gameContainer: { flex: 1 },
   gameHeader: {
     flexDirection: 'row',
@@ -733,7 +761,7 @@ const styles = StyleSheet.create({
   backButton: {
     width: 44,
     height: 44,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: PALETTE.lightYellow, // Cambiado de mint a lightYellow
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
@@ -741,7 +769,7 @@ const styles = StyleSheet.create({
   gameTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#000000',
     flex: 1,
     textAlign: 'center',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -760,7 +788,7 @@ const styles = StyleSheet.create({
   scoreText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#000000',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
@@ -769,7 +797,7 @@ const styles = StyleSheet.create({
   levelText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#000000',
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     paddingHorizontal: 20,
     paddingVertical: 8,
@@ -787,7 +815,7 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 16,
-    color: '#FFFFFF',
+    color: '#000000',
     fontWeight: '600',
     marginBottom: 4,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -796,7 +824,7 @@ const styles = StyleSheet.create({
   },
   instruction: {
     fontSize: 18,
-    color: '#FFFFFF',
+    color: '#000000',
     textAlign: 'center',
     marginBottom: 30,
     fontWeight: '600',
@@ -826,8 +854,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
   },
-  correctItem: { backgroundColor: '#4CAF50', transform: [{ scale: 1.05 }] },
-  incorrectItem: { backgroundColor: '#F44336', transform: [{ scale: 0.95 }] },
+  correctItem: { 
+    backgroundColor: PALETTE.mint
+  },
+  incorrectItem: { 
+    backgroundColor: PALETTE.lightPink
+  },
   fadedItem: { opacity: 0.5 },
   itemImage: {
     width: 90,
@@ -885,7 +917,7 @@ const styles = StyleSheet.create({
   },
   analogyQuestion: {
     fontSize: 22,
-    color: '#FFFFFF',
+    color: '#000000',
     textAlign: 'center',
     fontWeight: '600',
     lineHeight: 30,
@@ -895,7 +927,7 @@ const styles = StyleSheet.create({
   },
   answersContainer: { width: '100%', marginBottom: 20 },
   answerOption: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: '#fae470', // Cambiado a amarillo
     borderRadius: 20,
     padding: 20,
     marginBottom: 16,
@@ -906,12 +938,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 8,
   },
-  correctAnswer: { backgroundColor: '#4CAF50' },
-  incorrectAnswer: { backgroundColor: '#F44336' },
-  fadedAnswer: { opacity: 0.5 },
-  answerText: { fontSize: 18, fontWeight: '600', color: '#333' },
-  answerImage: { width: 60, height: 60, marginBottom: 10 },
-
+  correctAnswer: { 
+    backgroundColor: PALETTE.mint 
+  },
+  incorrectAnswer: { 
+    backgroundColor: PALETTE.lightPink 
+  },
+  fadedAnswer: {
+    opacity: 0.5,
+  },
   nextButton: {
     borderRadius: 25,
     elevation: 8,
@@ -920,14 +955,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10,
     marginTop: 20,
+    backgroundColor: PALETTE.mint,
   },
   nextButtonGradient: { borderRadius: 25, paddingHorizontal: 30, paddingVertical: 16 },
   nextButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
+    color: '#333333',
+    padding: 16,
   },
 });
