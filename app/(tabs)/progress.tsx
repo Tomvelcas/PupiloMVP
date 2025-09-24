@@ -101,9 +101,9 @@ export default function ProgressScreen() {
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={styles.header}>
               <View style={styles.logoContainer}>
-                <LinearGradient colors={['#FFD700', '#FFA500']} style={styles.logoGradient}>
+                <View style={[styles.logoSolid]}>
                   <Text style={styles.logoText}>PUPILO</Text>
-                </LinearGradient>
+                </View>
               </View>
               <Text style={styles.headerTitle}>Tu Progreso</Text>
               <Text style={styles.headerSubtitle}>¡Sigue así, lo estás haciendo genial!</Text>
@@ -276,6 +276,18 @@ const styles = StyleSheet.create({
   logoContainer: {
     marginBottom: 15,
   },
+  logoSolid: {
+    backgroundColor: '#427de1',
+    paddingHorizontal: 25,
+    paddingVertical: 12,
+    borderRadius: 20,
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    alignItems: 'center',
+  },
   logoGradient: {
     paddingHorizontal: 25,
     paddingVertical: 12,
@@ -296,13 +308,14 @@ const styles = StyleSheet.create({
     textShadowRadius: 2,
   },
   headerTitle: {
-    fontSize: 26,
+    fontSize: 34,           // Más grande
     fontWeight: 'bold',
-    color: '#333333',
+    color: '#fff',          // Blanco
     marginBottom: 8,
-    textShadowColor: 'rgba(255, 255, 255, 0.5)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 2 },
+    textShadowRadius: 3,
+    textAlign: 'center',
   },
   headerSubtitle: {
     fontSize: 16,
