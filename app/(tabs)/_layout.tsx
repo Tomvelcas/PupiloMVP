@@ -14,8 +14,8 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: PALETTE.mint, // Color activo verde menta
-        tabBarInactiveTintColor: PALETTE.lightPink, // Color inactivo rosa claro
+        tabBarActiveTintColor: '#427de1', // Azul para el activo
+        tabBarInactiveTintColor: PALETTE.mint, // Mint para el inactivo
         tabBarStyle: {
           backgroundColor: PALETTE.crema, // Fondo azul polvo
           borderTopWidth: 0,
@@ -45,7 +45,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Inicio',
           tabBarIcon: ({ color }) => (
             <Home size={32} color={color} strokeWidth={3} /> // Iconos más grandes y más gruesos
           ),
@@ -54,7 +54,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="games"
         options={{
-          title: 'Games',
+          title: 'Juegos',
           tabBarIcon: ({ color }) => (
             <Gamepad2 size={32} color={color} strokeWidth={3} />
           ),
@@ -72,7 +72,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="progress"
         options={{
-          title: 'Progress',
+          title: 'Progreso',
           tabBarIcon: ({ color }) => (
             <Trophy size={32} color={color} strokeWidth={3} />
           ),
