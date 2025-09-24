@@ -135,6 +135,13 @@ const categories: Category[] = [
   },
 ];
 
+const PASTEL_COLORS = [
+  '#ffe0ec', // pastel pink
+  '#c8f7dc', // pastel green
+  '#fff6c1', // pastel yellow
+  '#c7eaff', // pastel blue
+];
+
 export default function HomeScreen() {
   const router = useRouter();
   const [customPrompt, setCustomPrompt] = useState('');
@@ -446,10 +453,12 @@ export default function HomeScreen() {
             {/* Progress Stats */}
             <View style={styles.statsSection}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>📊 Tu Progreso</Text>
+                <View style={[styles.categoriesBanner, { width: width / 3, alignSelf: 'center' }]}>
+                  <Text style={styles.categoriesBannerText}>📊 Tu Progreso</Text>
+                </View>
               </View>
               
-              <View style={styles.statsContainer}>
+              <View style={[styles.statsContainer, { width: width * 0.7, alignSelf: 'center', justifyContent: 'center' }]}>
                 <View style={styles.statCard}>
                   <LinearGradient colors={['#FFD700', '#FFA500']} style={styles.statGradient}>
                     <Text style={styles.statEmoji}>⭐</Text>
@@ -778,7 +787,9 @@ const styles = StyleSheet.create({
   },
   statsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center', // Centra las cartas
+    alignItems: 'center',
+    gap: 24, // Si tu versión de RN lo soporta, para separar las cartas
   },
   statCard: {
     borderRadius: 20,
