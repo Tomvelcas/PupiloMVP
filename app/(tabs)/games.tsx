@@ -1,3 +1,4 @@
+import * as Speech from 'expo-speech';
 import React, { useState } from 'react';
 import {
   View,
@@ -466,6 +467,33 @@ export default function GamesScreen() {
           </AnimatedButton>
         ))}
       </View>
+      <View style={{ alignItems: 'center', marginVertical: 16 }}>
+        <AnimatedButton
+          onPress={() => handleSpeakInstruction(currentScenario.instruction)}
+          style={{
+            backgroundColor: '#ff4da6', // rosa llamativo
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderRadius: 30,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 6,
+          }}
+        >
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
+          >
+            Escuchar instrucción
+          </Text>
+        </AnimatedButton>
+      </View>
 
       {showNextButton && (
         <AnimatedButton onPress={handleNextLevel} style={styles.nextButton}>
@@ -510,6 +538,34 @@ export default function GamesScreen() {
             </View>
           ))}
         </View>
+
+        <View style={{ alignItems: 'center', marginVertical: 16 }}>
+        <AnimatedButton
+          onPress={() => handleSpeakInstruction(currentFindGame.title)}
+          style={{
+            backgroundColor: '#ff4da6', // rosa llamativo
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderRadius: 30,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 6,
+          }}
+        >
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
+          >
+            Escuchar instrucción
+          </Text>
+        </AnimatedButton>
+      </View>
 
         <AnimatedButton onPress={handleNextLevel} style={styles.nextButton}>
           <LinearGradient colors={['#4CAF50', '#45A049']} style={styles.nextButtonGradient}>
@@ -565,6 +621,34 @@ export default function GamesScreen() {
           ))}
         </View>
 
+        <View style={{ alignItems: 'center', marginVertical: 16 }}>
+        <AnimatedButton
+          onPress={() => handleSpeakInstruction(currentAnalogy.question)}
+          style={{
+            backgroundColor: '#ff4da6', // rosa llamativo
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderRadius: 30,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 6,
+          }}
+        >
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
+          >
+            Escuchar instrucción
+          </Text>
+        </AnimatedButton>
+      </View>
+
         {showNextButton && (
           <AnimatedButton onPress={handleNextLevel} style={styles.nextButton}>
             <LinearGradient colors={['#4CAF50', '#45A049']} style={styles.nextButtonGradient}>
@@ -573,8 +657,13 @@ export default function GamesScreen() {
           </AnimatedButton>
         )}
       </View>
+
     </View>
   );
+
+  const handleSpeakInstruction = (instruction: string) => {
+  Speech.speak(instruction, { language: 'es-ES' }); // ajusta idioma si lo deseas
+  };
 
   return (
     <View style={styles.container}>

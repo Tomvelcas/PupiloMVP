@@ -1,3 +1,5 @@
+import TextToSpeech from '../../components/TextToSpeech';
+import * as Speech from 'expo-speech';
 import React, { useState } from 'react';
 import {
   View,
@@ -16,6 +18,7 @@ import { Brain, Wand as Wand2 } from 'lucide-react-native';
 import InteractiveBackground from '@/components/InteractiveBackground';
 import GameCard from '@/components/GameCard';
 import AnimatedButton from '@/components/AnimatedButton';
+import { Button } from 'react-native';
 import FloatingAvatar from '@/components/FloatingAvatar';
 import GameTemplate from '@/components/GameTemplate';
 import { generateGameContent } from '@/utils/openai'; // <-- updated import
@@ -250,6 +253,12 @@ export default function HomeScreen() {
     }
   };
 
+  // 👇 AQUI colocas la función
+  const handleSpeak = (title: string, description: string) => {
+    const text = `${title}. ${description}`;
+    Speech.speak(text, { language: 'es-ES' }); // puedes ajustar idioma
+  };
+
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#87CEEB', '#4682B4', '#1E90FF']} style={styles.gradient}>
@@ -350,15 +359,43 @@ export default function HomeScreen() {
               
               <View style={styles.gamesGrid}>
                 {gameTypes.map((game) => (
-                  <GameCard
-                    key={game.id}
-                    title={game.title}
-                    description={game.description}
-                    colors={game.colors}
-                    emoji={game.emoji}
-                    difficulty={game.difficulty}
-                    onPress={() => handleGamePress(game)}
-                  />
+                  <View key={game.id} style={{ marginBottom: 12 }}>
+                    <GameCard
+                      title={game.title}
+                      description={game.description}
+                      colors={game.colors}
+                      emoji={game.emoji}
+                      difficulty={game.difficulty}
+                      onPress={() => handleGamePress(game)}
+                    />
+
+                    {/* Botón para convertir a voz */}
+                    <AnimatedButton
+                      onPress={() => handleSpeak(game.title, game.description)}
+                      style={{
+                        backgroundColor: '#ff4da6', // rosa fuerte
+                        paddingVertical: 12,
+                        paddingHorizontal: 24,
+                        borderRadius: 30,
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 4 },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4,
+                        elevation: 6, // sombra en Android
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontSize: 18,
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                        }}
+                      >
+                        Escuchar descripción
+                      </Text>
+                    </AnimatedButton>
+                  </View>
                 ))}
               </View>
             </View>
