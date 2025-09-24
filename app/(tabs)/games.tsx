@@ -69,7 +69,7 @@ const oddOneOutScenarios: GameScenario[] = [
   {
     id: '1',
     title: 'Animales del Océano vs Tierra',
-    instruction: 'Toca el animal que no pertenece al océano 🐠',
+    instruction: 'Toca el animal que no pertenece al océano',
     difficulty: 'easy',
     items: [
       {
@@ -109,7 +109,7 @@ const oddOneOutScenarios: GameScenario[] = [
   {
     id: '2',
     title: 'Frutas vs Verduras',
-    instruction: 'Toca la verdura que no es una fruta 🍎',
+    instruction: 'Toca la verdura que no es una fruta',
     difficulty: 'easy',
     items: [
       {
@@ -149,7 +149,7 @@ const oddOneOutScenarios: GameScenario[] = [
   {
     id: '3',
     title: 'Objetos de Cocina',
-    instruction: 'Toca el objeto que no pertenece a la cocina 🍳',
+    instruction: 'Toca el objeto que no pertenece a la cocina',
     difficulty: 'easy',
     items: [
       {
