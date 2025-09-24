@@ -1,3 +1,7 @@
+export const metadata = {
+  title: 'Pupilo',
+};
+
 import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
