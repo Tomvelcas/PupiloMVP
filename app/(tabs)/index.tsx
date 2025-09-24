@@ -600,15 +600,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 8,
     fontWeight: '600',
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
+    textShadowColor: 'rgba(0, 0, 0, 0.35)', // Más visible
+    textShadowOffset: { width: 2, height: 3 }, // Más desplazada
+    textShadowRadius: 4, // Más difusa
   },
   subtitle: {
     fontSize: 16,
     color: '#FFFFFF',
     textAlign: 'center',
     opacity: 0.9,
+    textShadowColor: 'rgba(0, 0, 0, 0.35)', // Más visible
+    textShadowOffset: { width: 2, height: 3 }, // Más desplazada
+    textShadowRadius: 4,
   },
   aiSection: {
     marginBottom: 30,
@@ -644,9 +647,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     fontWeight: '600',
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
+    textShadowColor: 'rgba(0, 0, 0, 0.35)', // Más visible
+    textShadowOffset: { width: 2, height: 3 }, // Más desplazada
+    textShadowRadius: 4,
   },
   inputContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
@@ -903,9 +906,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     fontWeight: '500',
-    textShadowColor: 'rgba(0,0,0,0.15)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
+    textShadowColor: 'rgba(0, 0, 0, 0.35)', // Más visible
+    textShadowOffset: { width: 2, height: 3 }, // Más desplazada
+    textShadowRadius: 4,
   },
   progressBanner: {
     backgroundColor: '#ffebee',
