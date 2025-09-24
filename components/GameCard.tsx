@@ -58,8 +58,8 @@ export default function GameCard({ title, description, colors, onPress, emoji, d
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: '48%',
+    container: {
+    width: '100%', // <-- Así la carta llena el ancho que le da el padre
     marginBottom: 16,
     borderRadius: 25,
     elevation: 8,

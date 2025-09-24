@@ -10,6 +10,7 @@ import {
   TextInput,
   Alert,
   Modal,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -259,9 +260,19 @@ export default function HomeScreen() {
     Speech.speak(text, { language: 'es-ES' }); // puedes ajustar idioma
   };
 
+  // Cálculo dinámico para 3 cartas por fila y 2/3 de ancho de página
+  const CARD_MARGIN = 16;
+  const gridWidth = width * 0.95; // Usa casi todo el ancho visible
+  const cardWidth = (gridWidth - CARD_MARGIN * 4) / 3; // 3 tarjetas + 4 márgenes
+
+  // Dentro de HomeScreen, antes del return:
+  const GAME_CARD_MARGIN = 16;
+  const gamesGridWidth = width * 0.666; // 2/3 del ancho de la página
+  const gameCardWidth = (gamesGridWidth - GAME_CARD_MARGIN * 4) / 3; // 3 cartas + 4 márgenes
+
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#87CEEB', '#4682B4', '#1E90FF']} style={styles.gradient}>
+      <View style={styles.solidBackground}> {/* Cambiado de LinearGradient a View */}
         <InteractiveBackground />
         
         <SafeAreaView style={styles.safeArea}>
@@ -269,13 +280,20 @@ export default function HomeScreen() {
             
             {/* Header with App Name */}
             <View style={styles.header}>
-              <View style={styles.avatarWelcome}>
+              {/* Avatar en la esquina superior derecha */}
+              <View style={styles.avatarAbsolute}>
                 <FloatingAvatar avatar={userAvatar} size={80} animated={true} />
               </View>
+              {/* Logo y banner centrados */}
               <View style={styles.logoContainer}>
-                <LinearGradient colors={['#FFD700', '#FFA500', '#FF6347']} style={styles.logoGradient}>
+                <Image
+                  source={require('../../assets/images/favicon.png')}
+                  style={styles.logoImage}
+                  resizeMode="contain"
+                />
+                <View style={styles.logoBanner}>
                   <Text style={styles.logoText}>PUPILO</Text>
-                </LinearGradient>
+                </View>
               </View>
               <Text style={styles.welcomeText}>¡Bienvenido a tu aventura de aprendizaje!</Text>
               <Text style={styles.subtitle}>Juega, aprende y diviértete con nosotros</Text>
@@ -284,52 +302,64 @@ export default function HomeScreen() {
             {/* AI Custom Game Generator - MAIN FEATURE */}
             <View style={styles.aiSection}>
               <View style={styles.aiHeader}>
-                <LinearGradient colors={['#9C27B0', '#E91E63']} style={styles.aiHeaderGradient}>
-                  <Brain size={32} color="#FFFFFF" />
+                <View style={[styles.aiHeaderGradient, { backgroundColor: '#ffb6c1' }]}>
+                  {/* <Brain size={32} color="#FFFFFF" /> */} {/* Eliminado el icono de cerebro */}
                   <Text style={styles.aiTitle}>🤖 Crea tu Juego con IA</Text>
-                </LinearGradient>
+                </View>
               </View>
               <Text style={styles.aiSubtitle}>
                 ¡Usa inteligencia artificial para crear juegos personalizados!
               </Text>
               
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Ejemplo: 'animales del océano vs animales de la tierra' o 'cosas de la cocina'"
-                  placeholderTextColor="#A0A0A0"
-                  value={customPrompt}
-                  onChangeText={setCustomPrompt}
-                  multiline
-                  maxLength={200}
-                />
-                <AnimatedButton onPress={generateCustomGame} style={styles.generateButton as any}>
-                  <LinearGradient colors={['#FF6B9D', '#FF8E9B']} style={styles.generateButtonGradient}>
-                    <Wand2 size={24} color="#FFFFFF" />
-                    <Text style={styles.generateButtonText}>{isGenerating ? 'Generando...' : '✨ ¡Crear Juego Mágico!'}</Text>
-                  </LinearGradient>
-                </AnimatedButton>
+              {/* NUEVO CONTENEDOR CENTRADO */}
+              <View style={styles.aiInputWrapper}>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="Ejemplo: 'animales del océano vs animales de la tierra' o 'cosas de la cocina'"
+                    placeholderTextColor="#A0A0A0"
+                    value={customPrompt}
+                    onChangeText={setCustomPrompt}
+                    multiline
+                    maxLength={200}
+                  />
+                  <AnimatedButton
+                    onPress={generateCustomGame}
+                    style={[
+                      styles.generateButton,
+                      { backgroundColor: '#87d4a3', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 18, paddingHorizontal: 24 }
+                    ]}
+                  >
+                    {/* <Wand2 size={24} color="#fff" /> */} {/* Eliminada la varita */}
+                    <Text style={styles.generateButtonText}>
+                      {isGenerating ? 'Generando...' : '✨ ¡Crear Juego Mágico!'}
+                    </Text>
+                  </AnimatedButton>
+                </View>
               </View>
             </View>
 
             {/* Game Categories */}
             <View style={styles.categoriesSection}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>🎯 Categorías de Juegos</Text>
+                <View style={styles.categoriesBanner}>
+                  <Text style={styles.categoriesBannerText}>🎯 Categorías de Juegos</Text>
+                </View>
+                <Text style={styles.categoriesBannerSubtext}>
+                  ¡Selecciona tu categoría preferida y aprende!
+                </Text>
               </View>
               
-              <View style={styles.categoriesGrid}>
+              <View style={[styles.categoriesGrid, { width: gridWidth, alignSelf: 'center', justifyContent: 'center' }]}>
                 {categories.map((category) => (
                   <AnimatedButton
                     key={category.id}
                     onPress={() => handleCategoryPress(category)}
-                    style={
-                      ([
-                        styles.categoryCard,
-                        { backgroundColor: category.color },
-                        selectedCategory === category.id && styles.selectedCategory,
-                      ] as any)
-                    }
+                    style={[
+                      styles.categoryCard,
+                      { backgroundColor: category.color, width: cardWidth, margin: CARD_MARGIN / 2 },
+                      selectedCategory === category.id && styles.selectedCategory,
+                    ]}
                   >
                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                     <Text style={styles.categoryName}>{category.name}</Text>
@@ -343,7 +373,7 @@ export default function HomeScreen() {
                       />
                       <Text style={styles.difficultyText}>
                         {category.difficulty === 'easy' ? 'Fácil' : 
-                         category.difficulty === 'medium' ? 'Medio' : 'Difícil'}
+                          category.difficulty === 'medium' ? 'Medio' : 'Difícil'}
                       </Text>
                     </View>
                   </AnimatedButton>
@@ -354,12 +384,24 @@ export default function HomeScreen() {
             {/* All Games Grid */}
             <View style={styles.gamesSection}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>🎮 Tipos de Juegos</Text>
+                <View style={styles.categoriesBanner}>
+                  <Text style={styles.categoriesBannerText}>🎮 Tipos de Juegos</Text>
+                </View>
+                <Text style={styles.categoriesBannerSubtext}>
+      ¡Selecciona tu tipo de juego preferido y aprende!
+    </Text>
               </View>
               
-              <View style={styles.gamesGrid}>
+              <View style={[styles.gamesGrid, { width: gamesGridWidth, alignSelf: 'center', justifyContent: 'center' }]}>
                 {gameTypes.map((game) => (
-                  <View key={game.id} style={{ marginBottom: 12 }}>
+                  <View
+                    key={game.id}
+                    style={{
+                      width: gameCardWidth,
+                      margin: GAME_CARD_MARGIN / 2,
+                      alignItems: 'center',
+                    }}
+                  >
                     <GameCard
                       title={game.title}
                       description={game.description}
@@ -373,7 +415,7 @@ export default function HomeScreen() {
                     <AnimatedButton
                       onPress={() => handleSpeak(game.title, game.description)}
                       style={{
-                        backgroundColor: '#ff4da6', // rosa fuerte
+                        backgroundColor: '#ff4da6',
                         paddingVertical: 12,
                         paddingHorizontal: 24,
                         borderRadius: 30,
@@ -381,7 +423,8 @@ export default function HomeScreen() {
                         shadowOffset: { width: 0, height: 4 },
                         shadowOpacity: 0.3,
                         shadowRadius: 4,
-                        elevation: 6, // sombra en Android
+                        elevation: 6,
+                        marginTop: 10,
                       }}
                     >
                       <Text
@@ -481,7 +524,7 @@ export default function HomeScreen() {
             </View>
           </View>
         </Modal>
-      </LinearGradient>
+      </View>
     </View>
   );
 }
@@ -490,8 +533,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  gradient: {
+  solidBackground: {
     flex: 1,
+    backgroundColor: '#b0e0e6', // Celeste de tu paleta
   },
   safeArea: {
     flex: 1,
@@ -503,22 +547,34 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: 30,
+    position: 'relative', // importante para el posicionamiento absoluto del avatar
   },
-  avatarWelcome: {
-    marginBottom: 20,
+  avatarAbsolute: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 2,
   },
   logoContainer: {
     marginBottom: 15,
   },
-  logoGradient: {
+  logoBanner: {
+    backgroundColor: '#427de1', // Azul sólido solicitado
+    borderRadius: 25,
     paddingHorizontal: 30,
     paddingVertical: 15,
-    borderRadius: 25,
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
+    alignItems: 'center',
+  },
+  logoImage: {
+    width: 160,      // antes 90
+    height: 160,     // antes 90
+    alignSelf: 'center',
+    marginBottom: 14, // un poco más de espacio
   },
   logoText: {
     fontSize: 36,
@@ -650,10 +706,11 @@ const styles = StyleSheet.create({
   categoriesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    paddingLeft: 32,   // <-- padding lateral aumentado
+    paddingRight: 32,  // <-- padding lateral aumentado
   },
   categoryCard: {
-    width: '48%',
     borderRadius: 25,
     padding: 20,
     marginBottom: 16,
@@ -799,4 +856,70 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: '#fff',
   },
+  aiInputWrapper: {
+    width: '66.666%',
+    alignSelf: 'center',
+    maxWidth: 600,
+    minWidth: 280,
+  },
+  categoriesBanner: {
+    backgroundColor: '#ffb6c1', // Rosado de tu paleta
+    borderRadius: 25,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    marginBottom: 0,
+  },
+  categoriesBannerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  categoriesBannerSubtext: {
+    fontSize: 16,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    fontWeight: '500',
+    textShadowColor: 'rgba(0,0,0,0.15)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 1,
+  },
+  progressBanner: {
+    backgroundColor: '#ffebee',
+    borderRadius: 25,
+    padding: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+  },
+  progressBannerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#d32f2f',
+    textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
 });
+
+export const metadata = {
+  title: 'Pupilo',
+};
